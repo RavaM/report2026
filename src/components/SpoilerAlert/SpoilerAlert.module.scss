@@ -1,0 +1,29 @@
+@use '@/styles/mixins' as mixins;
+
+.object {
+  width: 120px;
+  height: 36px;
+  background: var(--spoiler-bg-color, #decb86);
+  color: var(--spoiler-text-color, #000);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 100vmax;
+  font-size: 14px;
+  :global(.marquee__items) {
+    animation-name: marqueeScroll !important;
+  }
+  @include mixins.tablet() {
+    width: 140px;
+    height: 40px;
+    font-size: 16px;
+    line-height: 1.2;
+  }
+}
+
+@keyframes marqueeScroll {
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}

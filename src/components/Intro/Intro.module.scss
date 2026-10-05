@@ -1,0 +1,41 @@
+@use '@/styles/mixins' as mixins;
+
+.intro {
+  background: #fff;
+  margin-right: -2rem;
+  margin-bottom: 20px;
+  padding: 3rem var(--margin) 2rem;
+  position: relative;
+  @include mixins.laptop() {
+    margin: 0 calc(var(--margin) * -1);
+    margin-bottom: 20px;
+  }
+}
+
+.logo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 35vw;
+  max-width: 450px;
+  height: auto;
+  transform: translate(-24%, -34%);
+}
+
+.text {
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+  text-wrap: balance;
+
+  .title {
+    margin-bottom: 0.5em;
+  }
+  @include mixins.laptop() {
+    width: 70vw;
+  }
+  @include mixins.widescreen() {
+    width: 70vw;
+    max-width: 1220px;
+  }
+}

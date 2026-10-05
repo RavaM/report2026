@@ -1,0 +1,130 @@
+@use '@/styles/mixins' as mixins;
+
+.section {
+  min-height: 100vh;
+  overflow: hidden;
+  padding-top: 3rem;
+  text-align: center;
+  color: #ecfce6;
+  line-height: 1.2;
+}
+
+.logo {
+  position: relative;
+  padding-top: 43.87%;
+  width: 100%;
+  flex-shrink: 0;
+  .start {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 73.64%;
+  }
+  .number5 {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 28.49%;
+    transition: transform 3s ease, opacity 3s ease;
+  }
+  .number6 {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 28.49%;
+    transform: translateY(100%);
+    transition: transform 3s ease, opacity 3s ease;
+    opacity: 0;
+  }
+  &.animate {
+    .number5 {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+    .number6 {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+}
+
+.container {
+  margin: 0 1rem;
+}
+
+.top {
+  font-size: 30px;
+  line-height: 1.2;
+  max-width: 660px;
+  margin: 1em auto 0;
+  @include mixins.tablet() {
+    font-size: 52px;
+  }
+}
+
+.bottom {
+  font-size: 22px;
+  max-width: 460px;
+  margin: 0 auto;
+  @include mixins.tablet() {
+    font-size: 28px;
+  }
+}
+
+.button {
+  margin-top: 2em;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 2rem;
+  padding-bottom: 1em;
+  flex-direction: column;
+  gap: 1em;
+  font-size: 15px;
+  line-height: 1.5;
+  @include mixins.tablet() {
+    font-size: 20px;
+  }
+  @include mixins.laptop() {
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+  }
+  a {
+    text-decoration: underline;
+    text-decoration-color: #00ff92;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.25em;
+  }
+  a:hover {
+    color: #00ff92;
+  }
+}
+
+.carousel {
+  margin: 2.5em 0;
+  :global(.swiper) {
+    overflow: visible;
+  }
+  :global(.swiper-wrapper) {
+    transition-timing-function: linear !important;
+    position: relative;
+  }
+  :global(.swiper-slide) {
+    width: auto !important;
+    padding: 0 4px;
+    @include mixins.tablet() {
+      padding: 0 8px;
+    }
+  }
+  .media {
+    height: 50vw;
+    max-height: 500px;
+  }
+}

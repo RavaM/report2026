@@ -1,0 +1,86 @@
+import styles from './Intro.module.scss'
+import Heading from '@/components/Heading'
+import RichText from '@/components/RichText'
+
+export default function Intro({}) {
+  const scrollToAnchor = (id, duration = 800) => {
+    const target = document.getElementById(id)
+    if (target) {
+      // Check if user prefers reduced motion
+      const prefersReducedMotion = window.matchMedia(
+        '(prefers-reduced-motion: reduce)',
+      ).matches
+
+      if (prefersReducedMotion) {
+        // Instant scroll for users who prefer reduced motion
+        target.scrollIntoView({ behavior: 'auto' })
+        return
+      }
+
+      const start = window.pageYOffset
+      const end = target.getBoundingClientRect().top + window.pageYOffset
+      const distance = end - start
+      let startTime = null
+
+      const easeInOutQuad = (t, b, c, d) => {
+        t /= d / 2
+        if (t < 1) return (c / 2) * t * t + b
+        t--
+        return (-c / 2) * (t * (t - 2) - 1) + b
+      }
+
+      const scroll = (currentTime) => {
+        if (!startTime) startTime = currentTime
+        const timeElapsed = currentTime - startTime
+        const run = easeInOutQuad(timeElapsed, start, distance, duration)
+        window.scrollTo(0, run)
+        if (timeElapsed < duration) requestAnimationFrame(scroll)
+      }
+
+      requestAnimationFrame(scroll)
+    }
+  }
+
+  const handleScroll = (e) => {
+    e.preventDefault()
+    scrollToAnchor('outro', 2000)
+  }
+
+  return (
+    <header className={styles.intro}>
+      <svg
+        className={styles.logo}
+        xmlns="http://www.w3.org/2000/svg"
+        width="445"
+        height="394"
+        fill="none"
+        viewBox="0 0 445 394"
+        role="img"
+        aria-label="Logo di 5A Design"
+      >
+        <path
+          fill="#00FF92"
+          d="M408.718 312.09c-10.359 0-18.835-6.59-18.835-21.182v-61.066c32.072-20.89 54.152-58.077 54.152-109.804 0-72.49-52.74-119.563-122.902-119.563-58.39 0-92.294 29.185-105.479 56.957-15.068 31.538-39.554 35.304-91.352 35.304h-74.72c-.904 0-1.686.645-1.85 1.535L18.874 248.12a2.348 2.348 0 0 0 2.303 2.777c12.714-16.946 38.142-34.362 73.458-34.362 52.269 0 77.226 31.067 77.226 83.317 0 49.425-30.608 88.024-85.23 88.024-54.624 0-82.877-35.775-82.877-67.783 0-37.658 24.486-62.135 62.157-62.135 27.312 0 46.618 17.887 46.618 41.894 0 19.77-15.068 32.95-33.904 32.95-18.835 0-31.55-12.709-31.55-30.597 0-13.669 7.37-21.912 15.417-25.781 1.498-.72 2.477-2.208 2.477-3.874-9.888 3.295-20.719 13.18-20.719 29.655 0 19.3 14.598 33.421 34.375 33.421s36.729-14.592 36.729-35.774c0-25.419-20.719-44.718-49.443-44.718C27.3 255.134.93 281.023.93 320.093c0 33.421 28.724 73.432 95.119 73.432 71.575 0 117.251-42.365 117.251-97.439 0-55.074-41.909-86.141-106.892-86.141-39.554 0-68.75 17.416-84.288 34.833l23.073-119.092h147.459c.805 0 1.52-.508 1.779-1.271 2.722-7.922 17.461-50.696 23.578-65.57C229.47 30.991 263.214 3.3 321.133 3.3c68.75 0 120.076 45.66 120.076 116.738 0 50.018-20.836 85.976-51.326 106.509v-60.85c0-55.074-26.37-88.024-81.464-88.024-49.443 0-86.643 35.304-86.643 81.905 0 24.548 8.038 45.321 22.485 60.694-16.952 10.027-29.078 24.864-29.078 51.337 0 37.186 30.137 57.898 64.041 57.898 36.259 0 62.628-22.594 73.459-42.835 2.825 29.184 16.01 42.835 40.025 42.835 28.724 0 40.026-25.889 40.496-39.54-1.798 0-3.357 1.28-3.668 3.055-2.001 11.49-10.411 19.068-20.818 19.068Zm-56.977-68.946c-9.729 2.331-19.843 3.517-30.137 3.517-22.226 0-41.41-4.82-56.714-13.623 9.833-14.691 25.937-23.277 42.587-32.037 16.482-8.944 33.433-17.887 44.264-33.421v75.564Zm-127.14-83.566c0-45.189 33.904-72.961 71.575-72.961s57.448 18.828 57.448 49.896c0 44.718-34.374 56.015-68.749 67.312-13.274 4.364-26.685 8.728-38.156 15.04-14.235-14.903-22.118-35.172-22.118-59.287Zm76.284 154.866c-27.311 0-45.676-17.887-45.676-46.13 0-13.741 3.075-24.355 8.207-32.951 15.752 9.109 35.454 14.122 58.188 14.122 10.284 0 20.399-1.167 30.137-3.455v21.342c0 24.948-19.777 47.072-50.856 47.072Z"
+        />
+      </svg>
+      <div className={styles.text}>
+        <Heading weight={1} className={styles.title}>
+          Il 2025 di 5A Design
+        </Heading>
+        <RichText big>
+          <p>
+            È stato un anno pieno di progetti e di idee. Li raccontiamo qui,
+            insieme a qualche anticipazione per il 2026.
+          </p>
+          <p>
+            Scorri i progetti o{' '}
+            <a href="#outro" onClick={handleScroll}>
+              vai agli auguri
+            </a>
+            .
+          </p>
+        </RichText>
+      </div>
+    </header>
+  )
+}

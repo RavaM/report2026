@@ -1,0 +1,57 @@
+@use '@/styles/mixins' as mixins;
+
+.quote {
+  margin-top: 1rem;
+  font-size: 24px;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  //background-color: hotpink;
+  @include mixins.tablet() {
+    font-size: 30px;
+    max-width: 1500px;
+  }
+  @include mixins.widescreen() {
+    font-size: 40px;
+  }
+  cite {
+    font-size: 18px;
+    line-height: 1.35;
+    display: block;
+    margin-top: 1.2em;
+    @include mixins.tablet() {
+      font-size: 22px;
+    }
+    @include mixins.widescreen() {
+      font-size: 24px;
+    }
+    em {
+      display: block;
+      color: #a1a3ab;
+      font-style: normal;
+    }
+  }
+  .text,
+  cite,
+  cite em {
+    opacity: 0;
+    transform: translateY(1em);
+    transition: all 0.4s ease;
+    hanging-punctuation: first last;
+  }
+  &.visible {
+    .text {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    cite {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 0.4s;
+      em {
+        opacity: 1;
+        transform: translateY(0);
+        transition-delay: 0.4s;
+      }
+    }
+  }
+}

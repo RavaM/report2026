@@ -1,0 +1,64 @@
+@use '@/styles/mixins' as mixins;
+
+.numbers {
+  margin-top: 1rem;
+  li {
+    line-height: 1;
+    margin-top: 1.5em;
+    vertical-align: baseline;
+    @include mixins.tablet() {
+      margin-top: 1rem;
+      //background-color: pink;
+    }
+    @include mixins.laptop() {
+      display: flex;
+      gap: 0.4em;
+      align-items: flex-end;
+    }
+    &:first-child {
+      margin-top: 0;
+    }
+    .caption {
+      display: inline-block;
+      opacity: 0;
+      transition: all 0.4s ease 0.4s;
+      transform: translateY(-1em);
+      @include mixins.laptop() {
+        transform: translateY(-1.5em);
+      }
+    }
+    strong {
+      font-size: 100px;
+      font-weight: normal;
+      margin-right: 0.08em;
+      display: block;
+      margin-bottom: 0.05em;
+      overflow: hidden;
+      padding: 0.1em 0;
+      @include mixins.tablet() {
+        display: inline-block;
+        font-size: 174px;
+        margin-bottom: 0;
+      }
+      em {
+        font-size: 0.5em;
+        font-style: normal;
+      }
+      span {
+        display: inline-block;
+        opacity: 0;
+        transform: translateY(1em);
+        transition: all 0.4s ease;
+      }
+    }
+    &.visible {
+      strong span {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .caption {
+        opacity: 1;
+      }
+    }
+  }
+}

@@ -1,0 +1,46 @@
+@mixin mobile() {
+  @media screen and (max-width: 767px) {
+    @content;
+  }
+}
+
+@mixin tablet($down: false) {
+  @if ($down) {
+    @media screen and (max-width: 1023px) {
+      @content;
+    }
+  } @else {
+    @media screen and (min-width: 768px) {
+      @content;
+    }
+  }
+}
+
+@mixin laptop($down: false) {
+  @if ($down) {
+    @media screen and (max-width: 1279px) {
+      @content;
+    }
+  } @else {
+    @media screen and (min-width: 1024px) {
+      @content;
+    }
+  }
+}
+
+@mixin desktop() {
+  @media screen and (min-width: 1280px) {
+    @content;
+  }
+}
+
+@mixin widescreen() {
+  @media screen and (min-width: 1480px) {
+    @content;
+  }
+}
+
+@mixin grid-width($num, $of) {
+  $width: calc(100% * $num / $of - (1rem * ($of / $num - 1) / ($of / $num)));
+  width: $width;
+}
