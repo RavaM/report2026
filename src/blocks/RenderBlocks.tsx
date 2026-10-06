@@ -1,8 +1,4 @@
-import React from 'react'
 import type { Page } from '@/payload-types'
-import { CallToActionBlock } from '@/blocks/CallToAction/Component'
-import { ContentBlock } from '@/blocks/Content/Component'
-import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { Hero } from '@/blocks/Hero/Component'
 import { Intro } from '@/blocks/Intro/Component'
 import { ProjectsList } from '@/blocks/ProjectsList/Component'
@@ -37,15 +33,5 @@ const RenderContentBlock = ({
       return <Intro {...block} />
     case 'projectsList':
       return <ProjectsList {...block} />
-    case 'mediaBlock':
-      return <MediaBlock {...block} />
-    case 'content':
-      return <ContentBlock {...block} />
-    case 'cta':
-      return (
-        <div className="my-16">
-          <CallToActionBlock {...block} />
-        </div>
-      )
   }
 }

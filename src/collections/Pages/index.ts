@@ -2,8 +2,6 @@ import type { CollectionConfig } from 'payload'
 
 import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
-import { CallToAction } from '@/blocks/CallToAction/config'
-import { Content } from '@/blocks/Content/config'
 import { MediaBlock } from '@/blocks/MediaBlock/config'
 import { Hero } from '@/blocks/Hero/config'
 import { Intro } from '@/blocks/Intro/config'
@@ -69,7 +67,7 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [CallToAction, Content, MediaBlock, Hero, Intro, ProjectsList, Outro],
+              blocks: [Hero, Intro, ProjectsList, Outro],
               required: true,
               admin: {
                 initCollapsed: true,
