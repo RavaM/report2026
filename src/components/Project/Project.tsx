@@ -12,7 +12,55 @@ import RichText from '@/components/RichText'
 import Media from '@/components/Media'
 import Quote from './Quote'
 import Numbers from './Numbers'
-import dynamic from 'next/dynamic'
+import type { Media as PayloadMedia, Project as PayloadProject, Service } from '@/payload-types'
+
+type ProjectCTA = Pick<PayloadProject['ctas'][number], 'url'> & {
+  cta: PayloadProject['ctas'][number]['label']
+  buttonColor?: string
+  buttonTextColor?: string
+  ariaLabel?: string
+}
+
+type ProjectMedia = {
+  url: NonNullable<PayloadMedia['url']>
+  width: NonNullable<PayloadMedia['width']>
+  height: NonNullable<PayloadMedia['height']>
+  type: 'image' | 'video'
+}
+
+type ProjectSpoiler = {
+  image: ProjectMedia['url']
+  text: NonNullable<NonNullable<PayloadProject['spoiler']>['text']> | React.ReactNode
+  width?: ProjectMedia['width']
+  height?: ProjectMedia['height']
+  type?: ProjectMedia['type']
+}
+
+export type ProjectProps = Pick<PayloadProject, 'title' | 'color' | 'textColor' | 'quote'> & {
+  text?: PayloadProject['description'] | React.ReactNode
+  services?: Service['title'][]
+  numbers?: PayloadProject['statistics']
+  cta?: ProjectCTA
+  cta2?: ProjectCTA
+  spoiler?: ProjectSpoiler
+  gallery?: ProjectMedia[]
+  galleryCaption?: React.ReactNode
+  serviceColor?: string
+  is2026?: boolean
+  isContinue?: boolean
+  isLight?: boolean
+}
+
+type SpoilerProps = ProjectSpoiler & {
+  title: PayloadProject['title']
+  dark?: boolean
+}
+
+function isPayloadRichText(
+  value: ProjectProps['text'],
+): value is NonNullable<PayloadProject['description']> {
+  return typeof value === 'object' && value !== null && 'root' in value
+}
 
 export default function Project({
   title,
@@ -21,7 +69,7 @@ export default function Project({
   serviceColor,
   cta,
   cta2,
-  gallery,
+  gallery = [],
   galleryCaption,
   numbers,
   quote,
@@ -31,13 +79,13 @@ export default function Project({
   is2026,
   isContinue,
   isLight,
-}) {
-  const { ref, inView, entry } = useInView({
+}: ProjectProps) {
+  const { ref, inView } = useInView({
     rootMargin: '-50% 0% -50% 0%',
   })
   useEffect(() => {
     if (inView) document.body.style.backgroundColor = color
-  }, [inView])
+  }, [inView, color])
   return (
     <section
       className={classnames(
@@ -52,11 +100,7 @@ export default function Project({
         <div className={styles.wrap}>
           <div className={styles.content}>
             {is2026 && (
-              <SpoilerAlert
-                className={styles.spoilerAlert}
-                bgColor={color}
-                textColor={textColor}
-              />
+              <SpoilerAlert className={styles.spoilerAlert} bgColor={color} textColor={textColor} />
             )}
             <Heading
               weight={2}
@@ -65,12 +109,14 @@ export default function Project({
             >
               {title}
             </Heading>
-            <RichText className={styles.text}>{text}</RichText>
+            {text &&
+              (isPayloadRichText(text) ? (
+                <RichText className={styles.text} data={text} />
+              ) : (
+                <div className={styles.text}>{text}</div>
+              ))}
             {services && (
-              <p
-                className={styles.services}
-                style={{ color: serviceColor || color }}
-              >
+              <p className={styles.services} style={{ color: serviceColor || color }}>
                 {services.map((service, index) => (
                   <React.Fragment key={index}>
                     {service}
@@ -110,16 +156,9 @@ export default function Project({
           </div>
           <div className={styles.gallery}>
             {gallery.map((image, index) => (
-              <Media
-                className={styles.image}
-                key={index}
-                {...image}
-                alt={title}
-              />
+              <Media className={styles.image} key={index} {...image} alt={title} />
             ))}
-            {galleryCaption && (
-              <p className={styles.galleryCaption}>{galleryCaption}</p>
-            )}
+            {galleryCaption && <p className={styles.galleryCaption}>{galleryCaption}</p>}
           </div>
         </div>
         {quote && <Quote {...quote} color={quote.color || color} />}
@@ -138,18 +177,14 @@ const Spoiler = ({
   width = 500,
   height = 400,
   type = 'image',
-}) => {
-  const { ref, inView, entry } = useInView({
+}: SpoilerProps) => {
+  const { ref, inView } = useInView({
     triggerOnce: true,
     rootMargin: '-50% 0% -50% 0%',
   })
   return (
     <div
-      className={classnames(
-        styles.spoiler,
-        { [styles.dark]: dark },
-        { [styles.visible]: inView },
-      )}
+      className={classnames(styles.spoiler, { [styles.dark]: dark }, { [styles.visible]: inView })}
       ref={ref}
     >
       <div className={styles.wrap}>
@@ -164,7 +199,16 @@ const Spoiler = ({
         <div className={styles.text}>
           <span className={styles.line} />
           <p className={styles.caption}>Nel 2026</p>
-          <RichText className={styles.copy}>{text}</RichText>
+          {isPayloadRichText(text) ? (
+            <RichText
+              className={styles.copy}
+              data={text}
+              enableGutter={false}
+              enableProse={false}
+            />
+          ) : (
+            <div className={styles.copy}>{text}</div>
+          )}
         </div>
       </div>
     </div>

@@ -5,7 +5,6 @@ import configPromise from '@payload-config'
 import { getPayload, type RequiredDataFromCollectionSlug } from 'payload'
 import { draftMode } from 'next/headers'
 import { cache } from 'react'
-import { homeStatic } from '@/endpoints/seed/home-static'
 import styles from './page.module.scss'
 
 import { generateMeta } from '@/utilities/generateMeta'
@@ -14,7 +13,7 @@ import { LivePreviewListener } from '@/components/LivePreviewListener'
 import Hero from '@/components/Hero'
 import Intro from '@/components/Intro'
 import Project from '@/components/Project'
-import { useInView } from 'react-intersection-observer'
+import type { ProjectProps } from '@/components/Project/Project'
 import Outro from '@/components/Outro'
 
 export async function generateStaticParams() {
@@ -48,6 +47,7 @@ type Args = {
 }
 
 export default async function Page({ params: paramsPromise }: Args) {
+  const payload = await getPayload({ config: configPromise })
   const { isEnabled: draft } = await draftMode()
   const { slug = 'home' } = await paramsPromise
   // Decode to support slugs with special characters
@@ -55,22 +55,46 @@ export default async function Page({ params: paramsPromise }: Args) {
   const url = '/' + decodedSlug
   let page: RequiredDataFromCollectionSlug<'pages'> | null
 
+  const projects = await payload.find({
+    collection: 'projects',
+    depth: 1,
+    limit: 1,
+    pagination: false,
+    sort: 'createdAt',
+    draft: false,
+    overrideAccess: false,
+    where: {
+      _status: {
+        equals: 'published',
+      },
+    },
+  })
+
   // const { ref, inView, entry } = useInView({
   //   rootMargin: '-50% 0% -50% 0%',
   // })
 
+  const firstProject = projects.docs[0]
+  const [primaryCta, secondaryCta] = firstProject?.ctas ?? []
+  const spoilerData = firstProject?.spoiler
+  const spoilerMedia =
+    typeof spoilerData?.image === 'object' && spoilerData.image !== null
+      ? spoilerData.image
+      : undefined
+  const spoiler: ProjectProps['spoiler'] =
+    spoilerMedia?.url && spoilerData?.text
+      ? {
+          image: spoilerMedia.url,
+          text: spoilerData.text,
+          type: spoilerMedia.mimeType?.startsWith('video/') ? 'video' : 'image',
+          width: spoilerMedia.width ?? spoilerData.width ?? 500,
+          height: spoilerMedia.height ?? spoilerData.height ?? 400,
+        }
+      : undefined
+
   page = await queryPageBySlug({
     slug: decodedSlug,
   })
-
-  // Remove this code once your website is seeded
-  if (!page && slug === 'home') {
-    page = homeStatic
-  }
-
-  if (!page) {
-    return <PayloadRedirects url={url} />
-  }
 
   return (
     <article className="pt-16 pb-24">
@@ -89,37 +113,32 @@ export default async function Page({ params: paramsPromise }: Args) {
           // ref={ref}
           >
             <Project
-              color="#B6050F"
-              textColor="#fff"
-              title="Corriere dello Sport"
-              services={[
-                'Information architecture',
-                'Design sprint e information design',
-                'Visual design',
-                'Full responsive experience',
-                'Frontend development (React/Next.js)',
-              ]}
+              color={firstProject?.color ?? '#B6050F'}
+              textColor={firstProject?.textColor ?? '#FFFFFF'}
+              title={firstProject?.title ?? 'Corriere dello Sport'}
+              services={(firstProject?.services ?? []).flatMap((service) =>
+                typeof service === 'object' && service !== null ? [service.title] : [],
+              )}
               text={
-                <>
-                  <p>
-                    Nel 2025 abbiamo consolidato la <strong>visione di sistema</strong> dei siti
-                    periodici del Corriere dello Sport: <strong>Auto.it</strong>,{' '}
-                    <strong>Autosprint</strong>, <strong>Motosprint</strong> e{' '}
-                    <strong>InMoto</strong>.
-                  </p>
-                  <p>
-                    {' '}
-                    Ogni sito mantiene la propria voce editoriale con un framework condiviso, un
-                    design system comune e un’immagine distintiva. I lettori trovano rapidamente
-                    live, classifiche, listini e prove. La redazione e il commerciale hanno nuovi
-                    strumenti flessibili.
-                  </p>
-                </>
+                firstProject?.description ?? (
+                  <>
+                    <p>
+                      Nel 2025 abbiamo consolidato la <strong>visione di sistema</strong> dei siti
+                      periodici del Corriere dello Sport: <strong>Auto.it</strong>,{' '}
+                      <strong>Autosprint</strong>, <strong>Motosprint</strong> e{' '}
+                      <strong>InMoto</strong>.
+                    </p>
+                    <p>
+                      {' '}
+                      Ogni sito mantiene la propria voce editoriale con un framework condiviso, un
+                      design system comune e un’immagine distintiva. I lettori trovano rapidamente
+                      live, classifiche, listini e prove. La redazione e il commerciale hanno nuovi
+                      strumenti flessibili.
+                    </p>
+                  </>
+                )
               }
-              cta={{
-                url: 'https://journal.5adesign.it/',
-                cta: 'Leggi sul Journal',
-              }}
+              cta={primaryCta ? { url: primaryCta.url, cta: primaryCta.label } : undefined}
               gallery={[
                 {
                   type: 'image',
@@ -152,38 +171,19 @@ export default async function Page({ params: paramsPromise }: Args) {
                   height: 1000,
                 },
               ]}
-              quote={{
-                text: '5A Design è un partner con cui portiamo avanti una collaborazione consistente e duratura. Ti spingono sempre a fare un passo in avanti, senza mai perdere solidità, funzionalità e un approccio concreto alle cose.',
-                author: {
-                  name: 'Ivo D’Antoni',
-                  role: 'Head of UI / UX in Sport Network',
-                },
-              }}
-              numbers={[
-                {
-                  value: 4,
-                  prefix: null,
-                  suffix: null,
-                  label: 'Siti un’unica piattaforma',
-                },
-                {
-                  value: 18,
-                  prefix: '+',
-                  suffix: '%',
-                  label: 'incremento medio della ADV viewability',
-                },
-              ]}
-              spoiler={{
-                image: '/media/cds/06-tobe-corriere-dello-sport.png',
-                text: (
-                  <>
-                    <p>
-                      Applicare lo stesso approccio ai siti Corriere dello Sport e Tutto Sport,
-                      estendendo il refactoring oltre l’ecosistema automotive.
-                    </p>
-                  </>
-                ),
-              }}
+              quote={
+                firstProject?.quote?.text?.trim()
+                  ? {
+                      ...firstProject.quote,
+                      author: firstProject.quote.author?.name?.trim()
+                        ? firstProject.quote.author
+                        : undefined,
+                    }
+                  : undefined
+              }
+              numbers={firstProject?.statistics ?? []}
+              spoiler={spoiler}
+              cta2={secondaryCta ? { url: secondaryCta.url, cta: secondaryCta.label } : undefined}
             />
             <Project
               color="#BFEBFD"
