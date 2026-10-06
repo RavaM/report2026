@@ -156,7 +156,7 @@ export interface UserAuthOperations {
 export interface Page {
   id: number;
   title: string;
-  layout: (CallToActionBlock | ContentBlock | MediaBlock)[];
+  layout: (CallToActionBlock | ContentBlock | MediaBlock | HeroBlock | IntroBlock | ProjectsListBlock | OutroBlock)[];
   meta?: {
     title?: string | null;
     /**
@@ -394,6 +394,109 @@ export interface FolderInterface {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroBlock".
+ */
+export interface HeroBlock {
+  text?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'hero';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "IntroBlock".
+ */
+export interface IntroBlock {
+  title: string;
+  text: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'intro';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProjectsListBlock".
+ */
+export interface ProjectsListBlock {
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'projectsList';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "OutroBlock".
+ */
+export interface OutroBlock {
+  greeting: string;
+  /**
+   * Line breaks are preserved on the page.
+   */
+  signature: string;
+  /**
+   * Choose uploaded images, GIFs, or videos. Use the Media alt field for their descriptions.
+   */
+  gallery?: (number | Media)[] | null;
+  /**
+   * Disable to display media in the selected order.
+   */
+  shuffleGallery?: boolean | null;
+  contactButton?: {
+    label?: string | null;
+    /**
+     * A website URL, internal path, or mailto: link. Leave empty to hide the button.
+     */
+    url?: string | null;
+    ariaLabel?: string | null;
+    color?: string | null;
+    textColor?: string | null;
+  };
+  /**
+   * Add links to previous reports, the Journal, and the website using the rich-text link tool.
+   */
+  footerText?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  copyright?: {
+    /**
+     * The current year is appended automatically when it is later than this year.
+     */
+    startYear?: number | null;
+    company?: string | null;
+    url?: string | null;
+    note?: string | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'outro';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "projects".
  */
 export interface Project {
@@ -415,6 +518,10 @@ export interface Project {
     [k: string]: unknown;
   } | null;
   services?: (number | Service)[] | null;
+  /**
+   * Images and videos displayed in this project, in the selected order.
+   */
+  gallery?: (number | Media)[] | null;
   color: string;
   textColor: string;
   /**
@@ -933,6 +1040,10 @@ export interface PagesSelect<T extends boolean = true> {
         cta?: T | CallToActionBlockSelect<T>;
         content?: T | ContentBlockSelect<T>;
         mediaBlock?: T | MediaBlockSelect<T>;
+        hero?: T | HeroBlockSelect<T>;
+        intro?: T | IntroBlockSelect<T>;
+        projectsList?: T | ProjectsListBlockSelect<T>;
+        outro?: T | OutroBlockSelect<T>;
       };
   meta?:
     | T
@@ -1004,6 +1115,63 @@ export interface ContentBlockSelect<T extends boolean = true> {
  */
 export interface MediaBlockSelect<T extends boolean = true> {
   media?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroBlock_select".
+ */
+export interface HeroBlockSelect<T extends boolean = true> {
+  text?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "IntroBlock_select".
+ */
+export interface IntroBlockSelect<T extends boolean = true> {
+  title?: T;
+  text?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProjectsListBlock_select".
+ */
+export interface ProjectsListBlockSelect<T extends boolean = true> {
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "OutroBlock_select".
+ */
+export interface OutroBlockSelect<T extends boolean = true> {
+  greeting?: T;
+  signature?: T;
+  gallery?: T;
+  shuffleGallery?: T;
+  contactButton?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+        ariaLabel?: T;
+        color?: T;
+        textColor?: T;
+      };
+  footerText?: T;
+  copyright?:
+    | T
+    | {
+        startYear?: T;
+        company?: T;
+        url?: T;
+        note?: T;
+      };
   id?: T;
   blockName?: T;
 }
@@ -1109,6 +1277,7 @@ export interface ProjectsSelect<T extends boolean = true> {
   title?: T;
   description?: T;
   services?: T;
+  gallery?: T;
   color?: T;
   textColor?: T;
   ctas?:

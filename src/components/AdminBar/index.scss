@@ -1,7 +1,95 @@
-@import '@payloadcms/ui/scss';
-
 .admin-bar {
-  @include small-break {
+  position: sticky;
+  top: 0;
+  z-index: 99999;
+  background: #17191c;
+  color: #fff;
+  border-bottom: 1px solid #363a40;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 12%);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 13px;
+  line-height: 1.4;
+
+  &[hidden] {
     display: none;
+  }
+
+  &__container {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 10px 24px;
+  }
+
+  &__bar,
+  &__controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  &__bar {
+    width: 100%;
+  }
+
+  &__logo {
+    flex-shrink: 0;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  &__user {
+    min-width: 0;
+    max-width: 280px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #b9bec6;
+  }
+
+  &__controls {
+    flex: 1;
+    justify-content: flex-end;
+  }
+
+  &__action {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 10px;
+    border: 1px solid #505660;
+    border-radius: 4px;
+    background: #292d33;
+    color: #fff;
+    font: inherit;
+    white-space: nowrap;
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover {
+      background: #3b414a;
+      border-color: #7b8491;
+    }
+  }
+
+  a:focus-visible,
+  button:focus-visible {
+    outline: 2px solid #00ff92;
+    outline-offset: 3px;
+  }
+
+  @media (max-width: 767px) {
+    &__container {
+      padding: 10px 12px;
+    }
+
+    &__controls {
+      flex: 1 1 100%;
+      justify-content: flex-start;
+      order: 1;
+    }
+
+    &__user {
+      flex: 1;
+    }
   }
 }

@@ -2,13 +2,8 @@ import { CollectionConfig } from 'payload'
 
 import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
-import {
-  FixedToolbarFeature,
-  HeadingFeature,
-  HorizontalRuleFeature,
-  InlineToolbarFeature,
-  lexicalEditor,
-} from '@payloadcms/richtext-lexical'
+import { FixedToolbarFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
+import { revalidateProject, revalidateProjectDelete } from './hooks/revalidateProject'
 
 export const Projects: CollectionConfig = {
   slug: 'projects',
@@ -45,6 +40,15 @@ export const Projects: CollectionConfig = {
         components: {
           Field: '@/components/admin/ServicesCheckboxes',
         },
+      },
+    },
+    {
+      name: 'gallery',
+      type: 'upload',
+      relationTo: 'media',
+      hasMany: true,
+      admin: {
+        description: 'Images and videos displayed in this project, in the selected order.',
       },
     },
     {
@@ -230,6 +234,10 @@ export const Projects: CollectionConfig = {
       ],
     },
   ],
+  hooks: {
+    afterChange: [revalidateProject],
+    afterDelete: [revalidateProjectDelete],
+  },
   versions: {
     drafts: true,
   },

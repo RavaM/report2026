@@ -10,13 +10,17 @@ A Next.js website with Payload CMS and PostgreSQL, based on the Payload Website 
 4. Open `http://localhost:3000/admin` and create your first admin user.
 5. Create and publish a Pages document with the slug `home`, then open `http://localhost:3000`.
 
-The homepage uses `src/app/(frontend)/[slug]/page.tsx`. It looks up the published `home` page and reads the first published project. Other page slugs use the same template. Content is managed manually in the admin panel.
+The homepage uses `src/app/(frontend)/[slug]/page.tsx`. It renders the layout of the published `home` page. Other page slugs use the same template and render their own layout. Missing pages return a 404. Content is managed manually in the admin panel.
+
+Add Hero, Intro, Projects List, and Outro blocks to the `home` page layout in the admin panel and publish it. Projects List displays all published projects in creation order, including their populated services, buttons, galleries, quotes, statistics, and spoiler media. Outro is placed through the page layout and exposes its greeting, signature, team media, contact button, footer links, and copyright in the CMS. Hero and Outro render without the content padding.
+
+The previous hardcoded page is preserved unchanged in `src/app/(frontend)/[slug]/home.fallback.tsx` for reference. It is not imported by the active page route.
 
 ## CMS structure
 
 - **Users**: authentication and admin access.
-- **Pages**: titles, slugs, layout fields, SEO metadata, drafts, and scheduled publishing. The configured layout blocks are Content, Media, and Call To Action. The current frontend template renders the report directly rather than using the page layout renderer; that renderer currently supports Content and Call To Action.
-- **Projects**: report entries with descriptions, services, colors, buttons, quotes, statistics, and spoiler media. Projects support drafts.
+- **Pages**: titles, slugs, layout fields, SEO metadata, drafts, and scheduled publishing. The configured layout blocks are Hero, Intro, Projects List, Outro, Content, Media, and Call To Action. The frontend renders these blocks in their saved order.
+- **Projects**: report entries with descriptions, services, colors, buttons, quotes, statistics, and spoiler media, and an ordered media gallery. Projects support drafts.
 - **Services**: reusable service labels linked to projects.
 - **Media**: uploaded images, videos, and other assets.
 - **Categories**: a taxonomy with nested document support.
@@ -26,7 +30,7 @@ Registered plugins provide SEO fields, nested categories, and form management. T
 
 Authenticated users can manage content. Public reads of Pages and Projects are limited to published documents. Services, Categories, and Media are publicly readable.
 
-Pages support draft and live preview through the preview routes. Page, Header, and Footer changes trigger cache revalidation through their hooks. Project data is queried by the frontend template; Projects currently have no revalidation hooks.
+Pages support draft and live preview through the preview routes. Page, Header, and Footer changes trigger cache revalidation through their hooks. Publishing, unpublishing, or deleting a Project revalidates pages so Projects List blocks reflect those changes. Projects List only displays published projects, including during page preview.
 
 ## Generated files
 

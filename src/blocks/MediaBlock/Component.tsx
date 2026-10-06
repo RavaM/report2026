@@ -1,67 +1,21 @@
-// import type { StaticImageData } from 'next/image'
+import type { MediaBlock as MediaBlockProps } from '@/payload-types'
+import Media from '@/components/Media'
+import RichText from '@/components/RichText'
 
-// import { cn } from '@/utilities/ui'
-// import React from 'react'
-// import RichText from '@/components/RichText'
+export const MediaBlock = ({ media }: MediaBlockProps) => {
+  if (typeof media !== 'object' || media === null || !media.url) return null
 
-// import type { MediaBlock as MediaBlockProps } from '@/payload-types'
-
-// import { Media } from '../../components/Media'
-
-// type Props = MediaBlockProps & {
-//   breakout?: boolean
-//   captionClassName?: string
-//   className?: string
-//   enableGutter?: boolean
-//   imgClassName?: string
-//   staticImage?: StaticImageData
-//   disableInnerContainer?: boolean
-// }
-
-// export const MediaBlock: React.FC<Props> = (props) => {
-//   const {
-//     captionClassName,
-//     className,
-//     enableGutter = true,
-//     imgClassName,
-//     media,
-//     staticImage,
-//     disableInnerContainer,
-//   } = props
-
-//   let caption
-//   if (media && typeof media === 'object') caption = media.caption
-
-//   return (
-//     <div
-//       className={cn(
-//         '',
-//         {
-//           container: enableGutter,
-//         },
-//         className,
-//       )}
-//     >
-//       {(media || staticImage) && (
-//         <Media
-//           imgClassName={cn('border border-border rounded-[0.8rem]', imgClassName)}
-//           resource={media}
-//           src={staticImage}
-//         />
-//       )}
-//       {caption && (
-//         <div
-//           className={cn(
-//             'mt-6',
-//             {
-//               container: !disableInnerContainer,
-//             },
-//             captionClassName,
-//           )}
-//         >
-//           <RichText data={caption} enableGutter={false} />
-//         </div>
-//       )}
-//     </div>
-//   )
-// }
+  return (
+    <div className="container my-16">
+      <Media
+        url={media.url}
+        alt={media.alt ?? ''}
+        type={media.mimeType?.startsWith('video/') ? 'video' : 'image'}
+        width={media.width ?? 800}
+        height={media.height ?? 600}
+        className="w-full"
+      />
+      {media.caption && <RichText data={media.caption} enableGutter={false} />}
+    </div>
+  )
+}

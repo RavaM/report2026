@@ -2,7 +2,6 @@
 
 import type { PayloadAdminBarProps, PayloadMeUser } from '@payloadcms/admin-bar'
 
-import { cn } from '@/utilities/ui'
 import { useSelectedLayoutSegments } from 'next/navigation'
 import { PayloadAdminBar } from '@payloadcms/admin-bar'
 import React, { useState } from 'react'
@@ -43,20 +42,20 @@ export const AdminBar: React.FC<{
   }, [])
 
   return (
-    <div
-      className={cn(baseClass, 'py-2 bg-black text-white', {
-        block: show,
-        hidden: !show,
-      })}
-    >
-      <div className="container">
+    <div className={baseClass} hidden={!show}>
+      <div className={`${baseClass}__container`}>
         <PayloadAdminBar
           {...adminBarProps}
-          className="py-2 text-white"
+          unstyled
+          className={`${baseClass}__bar`}
           classNames={{
-            controls: 'font-medium text-white',
-            logo: 'text-white',
-            user: 'text-white',
+            controls: `${baseClass}__controls`,
+            logo: `${baseClass}__logo`,
+            user: `${baseClass}__user`,
+            create: `${baseClass}__action`,
+            edit: `${baseClass}__action`,
+            preview: `${baseClass}__action`,
+            logout: `${baseClass}__action`,
           }}
           cmsURL={getClientSideURL()}
           collectionSlug={collection}
@@ -71,12 +70,6 @@ export const AdminBar: React.FC<{
               router.push('/')
               router.refresh()
             })
-          }}
-          style={{
-            backgroundColor: 'transparent',
-            padding: 0,
-            position: 'relative',
-            zIndex: 'unset',
           }}
         />
       </div>
