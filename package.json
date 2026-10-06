@@ -28,7 +28,6 @@
     "@payloadcms/next": "3.90.2",
     "@payloadcms/plugin-form-builder": "3.90.2",
     "@payloadcms/plugin-nested-docs": "3.90.2",
-    "@payloadcms/plugin-redirects": "3.90.2",
     "@payloadcms/plugin-seo": "3.90.2",
     "@payloadcms/richtext-lexical": "3.90.2",
     "@payloadcms/ui": "3.90.2",
@@ -84,13 +83,6 @@
   },
   "engines": {
     "node": "^18.20.2 || >=20.9.0",
-    "pnpm": "^9 || ^10 || ^11"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "sharp",
-      "esbuild",
-      "unrs-resolver"
-    ]
+    "pnpm": "^9 || ^10 || ^11 || ^12"
   }
 }

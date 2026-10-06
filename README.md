@@ -22,11 +22,11 @@ The homepage uses `src/app/(frontend)/[slug]/page.tsx`. It looks up the publishe
 - **Categories**: a taxonomy with nested document support.
 - **Header and Footer**: global navigation and footer configuration.
 
-Registered plugins provide SEO fields, redirects, nested categories, and form management. The form builder remains configured in the CMS, but the frontend form block has been removed.
+Registered plugins provide SEO fields, nested categories, and form management. The form builder remains configured in the CMS, but the frontend form block has been removed.
 
 Authenticated users can manage content. Public reads of Pages and Projects are limited to published documents. Services, Categories, and Media are publicly readable.
 
-Pages support draft and live preview through the preview routes. Page changes and Header, Footer, and redirect changes trigger cache revalidation through their hooks. Project data is queried by the frontend template; Projects currently have no revalidation hooks.
+Pages support draft and live preview through the preview routes. Page, Header, and Footer changes trigger cache revalidation through their hooks. Project data is queried by the frontend template; Projects currently have no revalidation hooks.
 
 ## Generated files
 

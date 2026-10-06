@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "strict": true,
-    "baseUrl": ".",
     "esModuleInterop": true,
     "target": "ES2022",
     "lib": [
@@ -40,7 +39,6 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "redirects.js",
     "next-env.d.ts",
     "next.config.js",
     "next-sitemap.config.cjs",
