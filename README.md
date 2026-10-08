@@ -81,6 +81,31 @@ pnpm payload migrate
 
 ## Production
 
+### Vercel media storage
+
+The Media collection uses Vercel Blob when `BLOB_READ_WRITE_TOKEN` is set.
+Without the token, uploads are saved locally to `public/media`. That directory
+is ignored by Git and is not persistent upload storage on Vercel.
+
+1. In Vercel, create a **public** Blob store and connect it to this project.
+   Ensure `BLOB_READ_WRITE_TOKEN` is available in the deployment environments.
+2. Add the same token to your local `.env` to transfer the existing media.
+   Keep the token server-only; it must not have a `NEXT_PUBLIC_` prefix.
+3. Review the additive `20261008_120000_vercel_blob` migration, then run
+   `pnpm payload migrate` against the existing deployment database. It adds
+   `prefix` and `_objectkey` to the Media table. It assumes the existing CMS
+   tables are already present; it is not an initial database migration.
+4. Run `pnpm media:upload` to check the local file count, then
+   `pnpm media:upload --upload` to copy the originals and all generated image
+   sizes. It preserves filenames, skips existing files of the same size, and
+   refuses to overwrite conflicts. It does not change CMS records or delete
+   local files. Use an empty store to avoid unrelated filename collisions.
+5. Deploy this code after the migration and transfer. Existing media IDs and
+   relationships remain valid because the files keep their original names.
+
+Client uploads are enabled so large original files can upload directly to Blob.
+No production migration, transfer, or redeploy is performed automatically.
+
 Configure the environment variables and persistent media storage for your deployment, then run:
 
 ```sh
