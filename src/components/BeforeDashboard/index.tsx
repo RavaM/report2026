@@ -7,59 +7,38 @@ const baseClass = 'before-dashboard'
 
 const BeforeDashboard: React.FC = () => {
   return (
-    <div className={baseClass}>
+    <div className={baseClass} lang="it">
       <Banner className={`${baseClass}__banner`} type="success">
-        <h4>Welcome to your dashboard!</h4>
+        <h4>Report 2026 · Guida rapida</h4>
       </Banner>
-      Here&apos;s what to do next:
-      <ul className={`${baseClass}__instructions`}>
+      <ol className={`${baseClass}__instructions`}>
         <li>
-          {'Create and publish your pages and projects, then '}
+          <a href="/admin/collections/media">Media</a>: carica immagini e video, compila Alt e
+          riutilizza i file già presenti.
+        </li>
+        <li>
+          <a href="/admin/collections/services">Services</a>: prepara i servizi da associare ai
+          progetti, evitando duplicati.
+        </li>
+        <li>
+          <a href="/admin/collections/projects">Projects</a>: inserisci titolo, descrizione,
+          servizi, gallery, colori e 1–2 pulsanti con testo e URL. Quote, Numbers e Nel 2026 sono
+          facoltativi.
+        </li>
+        <li>
+          <a href="/admin/collections/pages">Pages</a>: completa Hero → Intro → Projects List →
+          Outro e SEO. Mantieni lo slug <strong>homepage</strong>. La lista include automaticamente
+          i progetti pubblicati, in ordine di creazione.
+        </li>
+        <li>
+          <strong>Verifica e pubblica</strong>: lavora in bozza, controlla l’anteprima e pubblica
+          progetti e pagina. I progetti in bozza non appaiono nella lista. Infine{' '}
           <a href="/" target="_blank" rel="noopener noreferrer">
-            visit your website
+            controlla il sito
           </a>
-          {' to see the results.'}
+          .
         </li>
-        <li>
-          {'Modify your '}
-          <a
-            href="https://payloadcms.com/docs/configuration/collections"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            collections
-          </a>
-          {' and add more '}
-          <a
-            href="https://payloadcms.com/docs/fields/overview"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            fields
-          </a>
-          {' as needed. If you are new to Payload, we also recommend you check out the '}
-          <a
-            href="https://payloadcms.com/docs/getting-started/what-is-payload"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Getting Started
-          </a>
-          {' docs.'}
-        </li>
-        <li>
-          Commit and push your changes to the repository to trigger a redeployment of your project.
-        </li>
-      </ul>
-      {'Pro Tip: This block is a '}
-      <a
-        href="https://payloadcms.com/docs/custom-components/overview"
-        rel="noopener noreferrer"
-        target="_blank"
-      >
-        custom component
-      </a>
-      , you can remove it at any time by updating your <strong>payload.config</strong>.
+      </ol>
     </div>
   )
 }

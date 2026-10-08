@@ -2,6 +2,7 @@ import type { Page } from '@/payload-types'
 import { Hero } from '@/blocks/Hero/Component'
 import { Intro } from '@/blocks/Intro/Component'
 import { ProjectsList } from '@/blocks/ProjectsList/Component'
+import { BackgroundBoundary } from '@/blocks/ProjectsList/BackgroundBoundary'
 import Outro from '@/blocks/Outro/Component'
 
 type Props = {
@@ -14,6 +15,13 @@ export const RenderBlocks = ({ blocks, contentClassName }: Props) => {
     const key = block.id ?? index
     if (block.blockType === 'hero') return <Hero key={key} {...block} />
     if (block.blockType === 'outro') return <Outro key={key} {...block} />
+    if (block.blockType === 'projectsList') {
+      return (
+        <BackgroundBoundary key={key} className={contentClassName}>
+          <RenderContentBlock block={block} />
+        </BackgroundBoundary>
+      )
+    }
 
     return (
       <div key={key} className={contentClassName}>

@@ -4,7 +4,16 @@ import classnames from 'classnames'
 import { useInView } from 'react-intersection-observer'
 import { useState } from 'react'
 
-export default function Media({ url, alt, className, type, width, height }) {
+type MediaProps = {
+  url: string
+  alt: string
+  className?: string
+  type: 'image' | 'video'
+  width: number
+  height: number
+}
+
+export default function Media({ url, alt, className, type, width, height }: MediaProps) {
   const { ref, inView } = useInView({
     threshold: 0.1,
     triggerOnce: true,
@@ -16,7 +25,7 @@ export default function Media({ url, alt, className, type, width, height }) {
       [inView ? 'src' : 'data-src']: url,
     }
 
-    const handleVideoLoad = (e) => {
+    const handleVideoLoad = (e: React.SyntheticEvent<HTMLVideoElement>) => {
       setIsLoaded(true)
       // Forza il play su iOS
       if (inView) {

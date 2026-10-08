@@ -72,6 +72,9 @@ export default async function Page({ params: paramsPromise }: Args) {
   // const { ref, inView, entry } = useInView({
   //   rootMargin: '-50% 0% -50% 0%',
   // })
+  // useEffect(() => {
+  //   if (!inView) document.body.style.backgroundColor = '#5043FC'
+  // }, [inView])
 
   const firstProject = projects.docs[0]
   const [primaryCta, secondaryCta] = firstProject?.ctas ?? []

@@ -21,7 +21,7 @@
     height: 100%;
     width: 73.64%;
   }
-  .number5 {
+  .number6 {
     position: absolute;
     top: 0;
     right: 0;
@@ -31,7 +31,7 @@
       transform 3s ease,
       opacity 3s ease;
   }
-  .number6 {
+  .number7 {
     position: absolute;
     top: 0;
     right: 0;
@@ -44,11 +44,11 @@
     opacity: 0;
   }
   &.animate {
-    .number5 {
+    .number6 {
       transform: translateY(-100%);
       opacity: 0;
     }
-    .number6 {
+    .number7 {
       transform: translateY(0);
       opacity: 1;
     }

@@ -1,20 +1,33 @@
 @import '@payloadcms/ui/scss';
 
 .dashboard .before-dashboard {
-  margin-bottom: base(1.5);
+  margin-bottom: base(0.75);
+  font-size: 0.875rem;
+  line-height: 1.45;
 
   &__banner {
+    margin-bottom: base(0.5);
+    padding: base(0.375) base(0.5);
+
     & h4 {
       margin: 0;
+      font-size: 1rem;
     }
   }
 
   &__instructions {
     list-style: decimal;
-    margin-bottom: base(0.5);
+    margin: 0;
+    padding-left: base(1);
 
     & li {
       width: 100%;
+      margin-bottom: base(0.25);
+      padding-left: base(0.125);
+    }
+
+    & li:last-child {
+      margin-bottom: 0;
     }
   }
 
