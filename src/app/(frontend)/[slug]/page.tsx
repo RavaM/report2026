@@ -30,7 +30,6 @@ export default async function Page({ params: paramsPromise }: Args) {
   const { slug = 'homepage' } = await paramsPromise
   const page = await queryPageBySlug({ slug: decodeURIComponent(slug) })
 
-  console.log('page', page)
   if (!page) notFound()
 
   return (
