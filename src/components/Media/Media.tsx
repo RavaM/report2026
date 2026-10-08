@@ -29,7 +29,7 @@ export default function Media({ url, alt, className, type, width, height }: Medi
       setIsLoaded(true)
       // Forza il play su iOS
       if (inView) {
-        e.target.play().catch(() => {
+        e.currentTarget.play().catch(() => {
           // Ignora errori se il play fallisce
         })
       }
@@ -54,7 +54,7 @@ export default function Media({ url, alt, className, type, width, height }: Medi
           onCanPlay={(e) => {
             // Forza il play anche su canPlay per iOS
             if (inView) {
-              e.target.play().catch(() => {})
+              e.currentTarget.play().catch(() => {})
             }
           }}
         />

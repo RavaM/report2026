@@ -2,7 +2,6 @@ import type { CollectionConfig } from 'payload'
 
 import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
-import { MediaBlock } from '@/blocks/MediaBlock/config'
 import { Hero } from '@/blocks/Hero/config'
 import { Intro } from '@/blocks/Intro/config'
 import { ProjectsList } from '@/blocks/ProjectsList/config'

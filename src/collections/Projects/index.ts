@@ -57,7 +57,7 @@ export const Projects: CollectionConfig = {
       type: 'text',
       required: true,
       defaultValue: '#B6050F',
-      validate: (value) =>
+      validate: (value: any) =>
         /^#[0-9a-f]{6}$/i.test(value ?? '') ? true : 'Enter a color like #B6050F',
       admin: {
         components: {
@@ -71,7 +71,7 @@ export const Projects: CollectionConfig = {
       type: 'text',
       required: true,
       defaultValue: '#FFFFFF',
-      validate: (value) =>
+      validate: (value: any) =>
         /^#[0-9a-f]{6}$/i.test(value ?? '') ? true : 'Enter a color like #FFFFFF',
       admin: {
         components: {
@@ -147,7 +147,7 @@ export const Projects: CollectionConfig = {
           name: 'color',
           label: 'Author role color',
           type: 'text',
-          validate: (value) =>
+          validate: (value: any) =>
             !value || /^#[0-9a-f]{6}$/i.test(value) ? true : 'Enter a color like #936D3D',
           admin: {
             description: 'Leave empty to use the project background color.',
