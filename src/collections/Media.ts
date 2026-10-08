@@ -36,6 +36,9 @@ export const Media: CollectionConfig = {
       label: 'Video preview',
       maxLength: 200000,
       admin: {
+        disableListColumn: true,
+        disableListFilter: true,
+        disableBulkEdit: true,
         components: {
           Field: '@/components/admin/VideoThumbnail',
         },
