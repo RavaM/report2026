@@ -10,6 +10,8 @@ import { fileURLToPath } from 'url'
 
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
+import { setMediaThumbnail } from './hooks/setMediaThumbnail'
+import { videoThumbnail } from './endpoints/videoThumbnail'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -17,6 +19,10 @@ const dirname = path.dirname(filename)
 export const Media: CollectionConfig = {
   slug: 'media',
   folders: true,
+  endpoints: [videoThumbnail],
+  hooks: {
+    afterRead: [setMediaThumbnail],
+  },
   access: {
     create: authenticated,
     delete: authenticated,
@@ -24,6 +30,21 @@ export const Media: CollectionConfig = {
     update: authenticated,
   },
   fields: [
+    {
+      name: 'videoThumbnail',
+      type: 'text',
+      label: 'Video preview',
+      maxLength: 200000,
+      admin: {
+        components: {
+          Field: '@/components/admin/VideoThumbnail',
+        },
+      },
+      validate: (value: string | null | undefined) =>
+        !value ||
+        /^data:image\/jpeg;base64,[A-Za-z0-9+/]+=*$/.test(value) ||
+        'Generate a JPEG video preview.',
+    },
     {
       name: 'alt',
       type: 'text',

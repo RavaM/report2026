@@ -106,6 +106,20 @@ is ignored by Git and is not persistent upload storage on Vercel.
 Client uploads are enabled so large original files can upload directly to Blob.
 No production migration, transfer, or redeploy is performed automatically.
 
+### CMS media previews
+
+Image thumbnails use the URL resolved by the storage adapter after reading each
+media record. This avoids pointing the admin library at the local file route
+when files are stored in Blob.
+
+For video thumbnails, run the additive `20261008_140000_video_thumbnails`
+migration before deploying this version. In local development, Payload adds the
+column through schema push. Open a saved video in Media, click **Generate video
+preview**, then **Save**. The browser captures a small JPEG frame; it is stored
+with the media record and served by `/api/media/:id/video-thumbnail`. Existing
+videos need this step once. The source video must be accessible to the browser
+and use a supported codec; public Vercel Blob permits frame capture through CORS.
+
 Configure the environment variables and persistent media storage for your deployment, then run:
 
 ```sh

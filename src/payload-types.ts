@@ -272,6 +272,7 @@ export interface OutroBlock {
  */
 export interface Media {
   id: number;
+  videoThumbnail?: string | null;
   alt?: string | null;
   caption?: {
     root: {
@@ -792,6 +793,7 @@ export interface OutroBlockSelect<T extends boolean = true> {
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
+  videoThumbnail?: T;
   alt?: T;
   caption?: T;
   prefix?: T;
